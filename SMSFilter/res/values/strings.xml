@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SMSFilter</string>
+    <string name="action_settings">Settings</string>
+    <string name="button_send">发送消息</string>
+    <string name="warn_title">警告</string>
+    <string name="warn_message">您的账号将扣除4元</string>
+    <string name="button_ok">确认</string>
+    <string name="button_cancel">取消</string>
+    <string name="send_success">短信发送成功</string>
+    <string name="delivered_success">收信人已经成功接收消息</string>
+    <string name="dest_address">5556</string>
+    <string name="message_content">701129612910050208201302161045371217600000000000000000000000000ee758cd59d1ccba1ad6dbd52cc3cc497cdc9519d000050207000</string>
+
+</resources>
