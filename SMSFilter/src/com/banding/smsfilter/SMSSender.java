@@ -20,13 +20,11 @@ public class SMSSender extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);				
 		setContentView(R.layout.activity_main);
+		
 		Button button_send = (Button)this.findViewById(R.id.button_send);
 		button_send.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				confirmSend();
-//				if(){
-//					sendSMS("5556", "110");
-//				}
 			}
 		});
 	}
@@ -45,7 +43,7 @@ public class SMSSender extends Activity {
         List<String> texts = smsManager.divideMessage(message);
 		for(String text : texts){
 		smsManager.sendTextMessage(destAddress,null,text, mSendPI, mDeliverPI);
-		Log.i("sms", "send a message");
+		Log.i("sms_send", "send a message to "+destAddress);
 		}
 	}
 	/**
@@ -59,7 +57,8 @@ public class SMSSender extends Activity {
 	    /* 添加确定按钮 */
 	    ad.setNegativeButton(R.string.button_ok, new DialogInterface.OnClickListener(){
 	    	public void onClick(DialogInterface dialog,int i){
-	    		sendSMS("5556", "110");
+	    		sendSMS(getResources().getString(R.string.dest_address), getResources().getString(R.string.message_content));
+	    		System.out.println(getResources().getString((R.string.dest_address)));
 	    	}
 	    });
 	    /* 添加取消按钮 */

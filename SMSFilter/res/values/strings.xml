@@ -9,8 +9,12 @@
     <string name="button_ok">确认</string>
     <string name="button_cancel">取消</string>
     <string name="send_success">短信发送成功</string>
+    <string name="send_failure">短信发送失败</string>
     <string name="delivered_success">收信人已经成功接收消息</string>
-    <string name="dest_address">5556</string>
+    <string name="delivered_failure">收信人未能成功接收消息</string>
+    <string name="intercept_success_1">拦截了一条短信来自</string>
+    <string name="intercept_success_2">的短信</string>
+    <string name="dest_address">15555215556</string>
     <string name="message_content">701129612910050208201302161045371217600000000000000000000000000ee758cd59d1ccba1ad6dbd52cc3cc497cdc9519d000050207000</string>
 
 </resources>

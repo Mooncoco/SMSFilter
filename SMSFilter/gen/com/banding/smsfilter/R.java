@@ -39,9 +39,13 @@ public final class R {
         public static final int button_cancel=0x7f050006;
         public static final int button_ok=0x7f050005;
         public static final int button_send=0x7f050002;
-        public static final int delivered_success=0x7f050008;
-        public static final int dest_address=0x7f050009;
-        public static final int message_content=0x7f05000a;
+        public static final int delivered_failure=0x7f05000a;
+        public static final int delivered_success=0x7f050009;
+        public static final int dest_address=0x7f05000d;
+        public static final int intercept_success_1=0x7f05000b;
+        public static final int intercept_success_2=0x7f05000c;
+        public static final int message_content=0x7f05000e;
+        public static final int send_failure=0x7f050008;
         public static final int send_success=0x7f050007;
         public static final int warn_message=0x7f050004;
         public static final int warn_title=0x7f050003;

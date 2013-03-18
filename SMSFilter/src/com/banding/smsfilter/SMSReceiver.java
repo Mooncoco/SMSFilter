@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
+import android.util.Log;
 import android.widget.Toast;
 
 public class SMSReceiver extends BroadcastReceiver {
@@ -25,10 +26,16 @@ public class SMSReceiver extends BroadcastReceiver {
 						Toast.LENGTH_SHORT).show();
 				break;
 			case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+				Toast.makeText(context, R.string.send_failure,
+						Toast.LENGTH_SHORT).show();
 				break;
 			case SmsManager.RESULT_ERROR_RADIO_OFF:
+				Toast.makeText(context, R.string.send_failure,
+						Toast.LENGTH_SHORT).show();
 				break;
 			case SmsManager.RESULT_ERROR_NULL_PDU:
+				Toast.makeText(context, R.string.send_failure,
+						Toast.LENGTH_SHORT).show();
 				break;
 			}
 		}
@@ -55,13 +62,22 @@ public class SMSReceiver extends BroadcastReceiver {
 							.getDisplayOriginatingAddress());
 				}
 				String Number = sms_number.toString();
+				Log.i("sms_receive", "receive a message from "+Number);
 
 				boolean flags_filter = false;
-				if (Number.equals("15555215556")) { // 屏蔽15552185556发来的短信
+				String interceptNubmer = context.getString(R.string.dest_address);
+				String interceptMessage1 = context.getString(R.string.intercept_success_1);
+				String interceptMessage2 = context.getString(R.string.intercept_success_2);
+				
+				System.out.println(interceptNubmer);
+				if (Number.equals(interceptNubmer)) { // 屏蔽特定号码发来的短信
 					flags_filter = true;
 				}
 				if (flags_filter) {
 					this.abortBroadcast();
+					Toast.makeText(context, interceptMessage1+interceptNubmer+interceptMessage2,
+							Toast.LENGTH_SHORT).show();
+					Log.i("sms_intercept", "intercept a message from "+Number);
 				}
 			}
 		}

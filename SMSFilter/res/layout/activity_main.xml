@@ -10,7 +10,7 @@
         android:id="@+id/button_send"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_send"
-        android:gravity="center" />
+        android:gravity="center"
+        android:text="@string/button_send" />
     
 </LinearLayout>
