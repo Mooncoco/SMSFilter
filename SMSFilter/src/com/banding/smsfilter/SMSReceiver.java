@@ -11,56 +11,63 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class SMSReceiver extends BroadcastReceiver {
-	/* ÉùÃ÷¾²Ì¬×Ö·û´®£¬²¢Ê¹ÓÃÌØ¶¨±êÊ¶·û×÷ÎªActionÎª¶ÌĞÅµÄÒÀ¾İ */
+	/* å£°æ˜é™æ€å­—ç¬¦ä¸²ï¼Œå¹¶ä½¿ç”¨ç‰¹å®šæ ‡è¯†ç¬¦ä½œä¸ºActionä¸ºçŸ­ä¿¡çš„ä¾æ® */
 	private static final String mACTION = "android.provider.Telephony.SMS_RECEIVED";
 	private static final String sACTION = "com.banding.smsfilter.SMS_SEND";
 	private static final String dACTION = "com.banding.smsfilter.SMS_DELIVERED";
 
 	@Override
-	public void onReceive(Context context, Intent intent) {
-		/* ·¢ËÍ×´Ì¬ */
-		if (intent.getAction().equals(sACTION)) {
-			switch (getResultCode()) {
-			case Activity.RESULT_OK:
-				Toast.makeText(context, R.string.send_success,
-						Toast.LENGTH_SHORT).show();
-				break;
-			case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-				Toast.makeText(context, R.string.send_failure,
-						Toast.LENGTH_SHORT).show();
-				break;
-			case SmsManager.RESULT_ERROR_RADIO_OFF:
-				Toast.makeText(context, R.string.send_failure,
-						Toast.LENGTH_SHORT).show();
-				break;
-			case SmsManager.RESULT_ERROR_NULL_PDU:
-				Toast.makeText(context, R.string.send_failure,
-						Toast.LENGTH_SHORT).show();
-				break;
+	public void onReceive(Context context, Intent intent) 
+	{
+		/* å‘é€çŠ¶æ€ */
+		if (intent.getAction().equals(sACTION)) 
+		{
+			switch (getResultCode()) 
+			{
+				case Activity.RESULT_OK:
+					Toast.makeText(context, R.string.send_success, Toast.LENGTH_SHORT).show();
+					break;
+				case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+					Toast.makeText(context, R.string.send_failure, Toast.LENGTH_SHORT).show();
+					break;
+				case SmsManager.RESULT_ERROR_RADIO_OFF:
+					Toast.makeText(context, R.string.send_failure, Toast.LENGTH_SHORT).show();
+					break;
+				case SmsManager.RESULT_ERROR_NULL_PDU:
+					Toast.makeText(context, R.string.send_failure, Toast.LENGTH_SHORT).show();
+					break;
 			}
 		}
-		/* ½ÓÊÕÍê³É */
-		else if (intent.getAction().equals(dACTION)) {
-			Toast.makeText(context, R.string.delivered_success,
-					Toast.LENGTH_SHORT).show();
+		
+		/* æ¥æ”¶å®Œæˆ */
+		else if (intent.getAction().equals(dACTION)) 
+		{
+			Toast.makeText(context, R.string.delivered_success, Toast.LENGTH_SHORT).show();
 		}
-		/* ºÅÂëÆÁ±Î */
-		else if (intent.getAction().equals(mACTION)) {
-			StringBuilder sms_number = new StringBuilder(); // ¶ÌĞÅ·¢¼şÈË
-			StringBuilder sms_body = new StringBuilder(); // ¶ÌĞÅÄÚÈİ
+		
+		/* å·ç å±è”½ */
+		else if (intent.getAction().equals(mACTION)) 
+		{
+			StringBuilder sms_number = new StringBuilder(); 	// çŸ­ä¿¡å‘ä»¶äºº
+			StringBuilder sms_body = new StringBuilder(); 		// çŸ­ä¿¡å†…å®¹
+			
 			Bundle bundle = intent.getExtras();
-			if (bundle != null) {
+			if (bundle != null) 
+			{
 				Object[] _pdus = (Object[]) bundle.get("pdus");
 				SmsMessage[] message = new SmsMessage[_pdus.length];
 
-				for (int i = 0; i < _pdus.length; i++) {
+				for (int i = 0; i < _pdus.length; i++) 
+				{
 					message[i] = SmsMessage.createFromPdu((byte[]) _pdus[i]);
 				}
-				for (SmsMessage currentMessage : message) {
+				
+				for (SmsMessage currentMessage : message) 
+				{
 					sms_body.append(currentMessage.getDisplayMessageBody());
-					sms_number.append(currentMessage
-							.getDisplayOriginatingAddress());
+					sms_number.append(currentMessage.getDisplayOriginatingAddress());
 				}
+				
 				String Number = sms_number.toString();
 				Log.i("sms_receive", "receive a message from "+Number);
 
@@ -68,15 +75,18 @@ public class SMSReceiver extends BroadcastReceiver {
 				String interceptNubmer = context.getString(R.string.dest_address);
 				String interceptMessage1 = context.getString(R.string.intercept_success_1);
 				String interceptMessage2 = context.getString(R.string.intercept_success_2);
-				
+
 				System.out.println(interceptNubmer);
-				if (Number.equals(interceptNubmer)) { // ÆÁ±ÎÌØ¶¨ºÅÂë·¢À´µÄ¶ÌĞÅ
+				
+				if (Number.equals(interceptNubmer))  // å±è”½ç‰¹å®šå·ç å‘æ¥çš„çŸ­ä¿¡ 
+				{ 
 					flags_filter = true;
 				}
-				if (flags_filter) {
+				
+				if (flags_filter) 
+				{
 					this.abortBroadcast();
-					Toast.makeText(context, interceptMessage1+interceptNubmer+interceptMessage2,
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, interceptMessage1+interceptNubmer+interceptMessage2, Toast.LENGTH_SHORT).show();
 					Log.i("sms_intercept", "intercept a message from "+Number);
 				}
 			}
