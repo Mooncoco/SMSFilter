@@ -11,9 +11,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -27,7 +30,9 @@ public class MainActivity extends Activity
 	Button button_filter_cancel;
 	
 	boolean registered = false;
-	boolean filterFlag = false;
+	boolean filterFlag = true;
+	
+	private static boolean isExit = false;
 	
 	static final String ACTION_SMS_FILTER = "android.provider.Telephony.SMS_RECEIVED";
 	static final String ACTION_SMS_SEND = "com.banding.smsfilter.SMS_SEND";
@@ -51,7 +56,7 @@ public class MainActivity extends Activity
 		button_filter_content.setOnClickListener(new ClickEvent());
 		button_filter_cancel.setOnClickListener(new ClickEvent());
 		
-		//registerReceiver(sendReceiver, new IntentFilter(ACTION_SMS_SEND));
+		registerReceiver(sendReceiver, new IntentFilter(ACTION_SMS_SEND));
 	}
 	
 	// click event listener
@@ -71,20 +76,41 @@ public class MainActivity extends Activity
 			else if(v == button_filter_number)
 			{
 				// register sms receiver
-				registered = true;
 				
-				registerReceiver(filterReceiver, new IntentFilter(ACTION_SMS_FILTER));
+				if(registered)
+				{
+					Toast.makeText(getApplicationContext(), R.string.register_receive, Toast.LENGTH_SHORT).show();
+				}
+				else
+				{
+					registered = true;
+					
+					registerReceiver(filterReceiver, new IntentFilter(ACTION_SMS_FILTER));
+					
+					Toast.makeText(getApplicationContext(), R.string.register_receive, Toast.LENGTH_SHORT).show();
+					
+					Log.i("receiver", "register receiver... ");
+				}
 				
-				Log.i("receiver", "register receiver... ");
 			}
 			else if(v == button_filter_content)
 			{
 				// register sms receiver
-				registered = true;
 				
-				registerReceiver(filterReceiver, new IntentFilter(ACTION_SMS_FILTER));
-				
-				Log.i("receiver", "register receiver... ");
+				if(registered)
+				{
+					Toast.makeText(getApplicationContext(), R.string.register_receive, Toast.LENGTH_SHORT).show();
+				}
+				else
+				{
+					registered = true;
+					
+					registerReceiver(filterReceiver, new IntentFilter(ACTION_SMS_FILTER));
+					
+					Toast.makeText(getApplicationContext(), R.string.register_receive, Toast.LENGTH_SHORT).show();
+					
+					Log.i("receiver", "register receiver... ");
+				}
 			}
 			else if(v == button_filter_cancel)
 			{
@@ -191,6 +217,7 @@ public class MainActivity extends Activity
 				if(msg.contains(context.getString(R.string.filter_key)) && filterFlag)
 				{
 					this.abortBroadcast();
+					Toast.makeText(context, interceptMessage1+interceptNubmer+interceptMessage2, Toast.LENGTH_SHORT).show();
 					Log.i("sms_intercept", "intercept a message from " + number);
 				}
 			}
@@ -257,4 +284,42 @@ public class MainActivity extends Activity
 		/* 显示弹窗 */
 		ad.show();
 	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+		if (keyCode == KeyEvent.KEYCODE_BACK) 
+		{
+			onExit();
+            return false;
+        }
+		return super.onKeyDown(keyCode, event);
+	}
+	
+	Handler mHandler = new Handler()
+	{
+
+		@Override
+		public void handleMessage(Message msg)
+		{
+			super.handleMessage(msg);
+			isExit = false;
+		}
+		
+	};
+
+    private void onExit() 
+    {
+        if (!isExit) 
+        {
+            isExit = true;
+            Toast.makeText(getApplicationContext(), R.string.exit_toast, Toast.LENGTH_SHORT).show();
+            mHandler.sendEmptyMessageDelayed(0, 2000);
+        } 
+        else 
+        {
+            finish();
+            System.exit(0);
+        }
+    }
 }
